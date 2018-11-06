@@ -76,7 +76,9 @@ func main() {
 	if *forReal {
 		for _, c := range sendChannels {
 			_, _, err := api.PostMessage(c.ID, string(message), slack.PostMessageParameters{
-				Markdown: true,
+				Markdown:  true,
+				Parse:     "full",
+				LinkNames: 1,
 			})
 			if err != nil {
 				fmt.Printf("error sending message to %s - %s", c.Name, err.Error())
