@@ -74,14 +74,10 @@ func main() {
 	}
 
 	if *forReal {
-		options := []slack.MsgOption{
-			slack.MsgOptionText(string(message), true),
-			slack.MsgOptionPostMessageParameters(slack.PostMessageParameters{
-				Markdown: true,
-			}),
-		}
 		for _, c := range sendChannels {
-			_, _, err := api.PostMessage(c.ID, options...)
+			_, _, err := api.PostMessage(c.ID, string(message), slack.PostMessageParameters{
+				Markdown: true,
+			})
 			if err != nil {
 				fmt.Printf("error sending message to %s - %s", c.Name, err.Error())
 			}
