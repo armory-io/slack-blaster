@@ -22,9 +22,21 @@
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
+[[projects]]
+  name = "github.com/ryanuber/go-glob"
+  packages = ["."]
+  revision = "572520ed46dbddaed19ea3d9541bdd0494163693"
+  version = "v0.1"
+
+[[projects]]
+  name = "github.com/urfave/cli"
+  packages = ["."]
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7c653c4635e78cf61f34cba40055c36f618ce5aa86f5ff3b799f37f2430d15ec"
+  inputs-digest = "ed129bebed9898d5219eded5c534c8a56b57a24eba3402f62d5130dcd3ad64a2"
   solver-name = "gps-cdcl"
   solver-version = 1
