@@ -1,14 +1,13 @@
-package main
+package commands
 
 import (
-	"flag"
 	"fmt"
 	"io/ioutil"
-	"os"
 	"strings"
 	"sync"
 
 	"github.com/nlopes/slack"
+	"github.com/urfave/cli"
 )
 
 func stringInList(haystack []string, needle string) bool {
@@ -20,37 +19,27 @@ func stringInList(haystack []string, needle string) bool {
 	return false
 }
 
-var wg sync.WaitGroup
-
-func main() {
-	// pattern := flag.String("pattern", "*", "channel name filter")
-	messageFile := flag.String("message-file", "", "file containing message content")
-	channelFile := flag.String("channels-file", "", "file containing a list of channels to blast")
-	slackToken := flag.String("slack-token", "", "slack api token")
-	forReal := flag.Bool("for-real", false, "send the message...for real")
-	// flag for a file containing channel names
-	flag.Parse()
-
-	if *slackToken == "" {
-		token := os.Getenv("SLACK_TOKEN")
-		slackToken = &token
-	}
-
+func Blast(c *cli.Context) error {
+	var wg sync.WaitGroup
 	var channels []string
-	if *channelFile != "" {
-		file, err := ioutil.ReadFile(*channelFile)
+	channelFile := c.String("channels-list")
+	slackToken := c.GlobalString("slack-token")
+	messageFile := c.String("message-file")
+	forReal := c.Bool("for-real") 
+	if channelFile != "" {
+		file, err := ioutil.ReadFile(channelFile)
 		if err != nil {
-			panic(err)
+			return err
 		}
 		channels = strings.Split(string(file), "\n")
 	}
 
-	api := slack.New(*slackToken)
+	api := slack.New(slackToken)
 
 	slackChannels, err := api.GetChannels(true)
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	sendChannels := []slack.Channel{}
@@ -65,14 +54,14 @@ func main() {
 	fmt.Printf("the following channels will be notified of your message: \n%s\n", strings.Join(names, "\n"))
 
 	var message []byte
-	if *messageFile != "" {
-		message, err = ioutil.ReadFile(*messageFile)
+	if messageFile != "" {
+		message, err = ioutil.ReadFile(messageFile)
 		if err != nil {
-			panic(err)
+			return err
 		}
 	}
 
-	if *forReal {
+	if forReal {
 		wg.Add(len(sendChannels))
 		for c := range sendChannels {
 			cx := sendChannels[c]
@@ -100,4 +89,5 @@ func main() {
 		wg.Wait()
 	}
 
+	return nil
 }
