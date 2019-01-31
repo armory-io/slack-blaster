@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"sync"
 
 	"github.com/nlopes/slack"
 )
@@ -18,6 +19,8 @@ func stringInList(haystack []string, needle string) bool {
 	}
 	return false
 }
+
+var wg sync.WaitGroup
 
 func main() {
 	// pattern := flag.String("pattern", "*", "channel name filter")
@@ -57,10 +60,6 @@ func main() {
 			sendChannels = append(sendChannels, c)
 			names = append(names, c.Name)
 		}
-		// if glob.Glob(*pattern, c.Name) {
-		// 	sendChannels = append(sendChannels, c)
-		// 	names = append(names, c.Name)
-		// }
 	}
 
 	fmt.Printf("the following channels will be notified of your message: \n%s\n", strings.Join(names, "\n"))
@@ -74,16 +73,31 @@ func main() {
 	}
 
 	if *forReal {
-		for _, c := range sendChannels {
-			_, _, err := api.PostMessage(c.ID, string(message), slack.PostMessageParameters{
-				Markdown:  true,
-				Parse:     "full",
-				LinkNames: 1,
-			})
-			if err != nil {
-				fmt.Printf("error sending message to %s - %s", c.Name, err.Error())
-			}
+		wg.Add(len(sendChannels))
+		for c := range sendChannels {
+			cx := sendChannels[c]
+			go func(chanl *slack.Channel, wg *sync.WaitGroup) {
+				// join the channel first if we aren't in it yet
+				ch, err := api.JoinChannel(chanl.Name)
+				if err != nil {
+					fmt.Println(err)
+					wg.Done()
+					return
+				}
+				fmt.Printf("joined channel %s\n", ch.Name)
+				_, _, err = api.PostMessage(ch.ID, string(message), slack.PostMessageParameters{
+					Markdown:  true,
+					Parse:     "full",
+					LinkNames: 1,
+				})
+				if err != nil {
+					fmt.Printf("error sending message to %s - %s", ch.Name, err.Error())
+				}
+				fmt.Printf("Done sending message to %s", ch.Name)
+				wg.Done()
+			}(&cx, &wg)
 		}
+		wg.Wait()
 	}
 
 }
