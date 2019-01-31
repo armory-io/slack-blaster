@@ -1,0 +1,7 @@
+# github.com/gorilla/websocket v1.4.0
+github.com/gorilla/websocket
+# github.com/nlopes/slack v0.4.0
+github.com/nlopes/slack
+github.com/nlopes/slack/slackutilsx
+# github.com/pkg/errors v0.8.0
+github.com/pkg/errors
