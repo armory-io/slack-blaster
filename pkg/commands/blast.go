@@ -82,7 +82,7 @@ func Blast(c *cli.Context) error {
 				if err != nil {
 					fmt.Printf("error sending message to %s - %s", ch.Name, err.Error())
 				}
-				fmt.Printf("Done sending message to %s", ch.Name)
+				fmt.Printf("Done sending message to %s\n", ch.Name)
 				wg.Done()
 			}(&cx, &wg)
 		}
