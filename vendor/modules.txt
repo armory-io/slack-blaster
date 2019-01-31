@@ -5,3 +5,7 @@ github.com/nlopes/slack
 github.com/nlopes/slack/slackutilsx
 # github.com/pkg/errors v0.8.0
 github.com/pkg/errors
+# github.com/ryanuber/go-glob v0.0.0-20160226084822-572520ed46db
+github.com/ryanuber/go-glob
+# github.com/urfave/cli v1.20.0
+github.com/urfave/cli
