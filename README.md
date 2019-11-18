@@ -8,9 +8,13 @@
 
 ## Configure Slack Token
 
+*Note*: You will need to be a Slack admin to get a usable token. If you are
+not then please contact Alex Bello.
+
 In your web browser, go to [https://cloud-armory.slack.com](https://cloud-armory.slack.com)
-and then view page source. You will be looking for `api_token`. Use that token
-as your `SLACK_TOKEN`.
+and then navigate to Administration and then Members. Once there you can view the page
+source in the browser. You will be looking for the value associated with `api_token`.
+Use that token as your `SLACK_TOKEN`.
 
 Set your `SLACK_TOKEN` environment variable:
 
