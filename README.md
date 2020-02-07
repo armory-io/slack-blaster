@@ -9,7 +9,7 @@
 ## Configure Slack Token
 
 *Note*: You will need to be a Slack admin to get a usable token. If you are
-not then please contact Alex Bello.
+not then please contact Alex Bello. Alternatively, you can generate a [legacy token](https://slack.com/help/articles/215770388). Legacy tokens might go away at some point, but, in the mean time, it removes the reliance on Alex.
 
 In your web browser, go to [https://cloud-armory.slack.com](https://cloud-armory.slack.com)
 and then navigate to Administration and then Members. Once there you can view the page
