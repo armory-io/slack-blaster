@@ -24,16 +24,22 @@ export SLACK_TOKEN={slack-api-token}
 
 ## Getting List of Channels
 
-To get a list of all the channels:
+To get the list of all the channels:
 
 ```bash
 slack-blaster channels
 ```
 
-To get a list of channels matching a pattern:
+To get the list of channels matching a pattern:
 
 ```bash
 slack-blaster channels --pattern {pattern}
+```
+
+To get the list of only shared channels:
+
+```bash
+slack-blaster channels --shared
 ```
 
 ## Sending a message to channels

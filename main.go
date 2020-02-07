@@ -19,9 +19,14 @@ func main() {
 			Description: "list and filter channel names",
 			Flags: []cli.Flag{
 				cli.StringFlag{Name: "pattern", Usage: "pattern to use when matching channel name", Value: "*"},
+				cli.BoolFlag{Name: "shared", Usage: "look at shared channels only"},
 			},
 			Action: func(c *cli.Context) error {
-				if err := commands.Channels(c); err != nil {
+				pattern := c.String("pattern")
+				sharedOnly := c.Bool("shared")
+				slackToken := c.GlobalString("slack-token")
+
+				if err := commands.Channels(slackToken, pattern, sharedOnly); err != nil {
 					fmt.Println(err.Error())
 					return err
 				}
