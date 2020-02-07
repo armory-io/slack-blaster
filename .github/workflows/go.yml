@@ -25,4 +25,6 @@ jobs:
         fi
 
     - name: Build
-      run: make
+      run: |
+        make
+        ls -ltr build/macos/
