@@ -26,5 +26,6 @@ jobs:
 
     - name: Build
       run: |
-        make
+        make clean
+        make build
         ls -ltr build/macos/
